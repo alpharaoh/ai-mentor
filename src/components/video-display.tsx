@@ -48,7 +48,7 @@ export default function VideoDisplay({
             className={cn(
               "relative aspect-video bg-slate-800 rounded-lg overflow-hidden",
               participant.isSpeaking &&
-                "ring-2 ring-blue-400 ring-offset-2 ring-offset-blue-100",
+                "ring-3 ring-blue-300 ring-offset-4 ring-offset-slate-900",
             )}
           >
             {/* Show avatar when no video */}

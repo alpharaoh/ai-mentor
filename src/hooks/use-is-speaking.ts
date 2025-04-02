@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const VOLUME_THRESHOLD = 20;
+const VOLUME_THRESHOLD = 23;
 
 export const useIsSpeaking = (stream: MediaStream | undefined) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
