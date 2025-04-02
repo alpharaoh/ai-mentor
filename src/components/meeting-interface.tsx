@@ -26,8 +26,6 @@ export default function MeetingInterface() {
 
   const isSpeaking = useIsSpeaking(stream);
 
-  console.log({ isSpeaking });
-
   useEffect(() => {
     setSession(new UltravoxSession());
   }, []);
@@ -52,7 +50,7 @@ export default function MeetingInterface() {
 
   useEffect(() => {
     if (status === "idle") {
-      // createCall();
+      createCall();
     }
   }, [createCall, status]);
 
