@@ -7,9 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getMediaPermission } from "@/lib/get-media-permission";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useMediaDevices } from "@/hooks/use-media-devices";
 
 interface CameraSelectorProps {
   stream: MediaStream | undefined;
@@ -26,33 +26,8 @@ export default function CameraSelector({
   setIsCameraOnAction,
   setStreamAction,
 }: CameraSelectorProps) {
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string>("");
-
-  // Get available video devices
-  const { data: devices = [], isLoading: loadingDevices } = useQuery({
-    queryKey: ["videoDevices", !!stream],
-    queryFn: async () => {
-      if (!stream) {
-        await getMediaPermission({ video: true });
-      }
-
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoInputs = devices.filter(
-        (device) => device.kind === "videoinput",
-      );
-
-      if (videoInputs.length === 0) {
-        return undefined;
-      }
-
-      // Set default device if we have devices and none is selected
-      if (!selectedDeviceId) {
-        setSelectedDeviceId(videoInputs[0].deviceId);
-      }
-
-      return videoInputs;
-    },
-  });
+  const { devices, selectedDeviceId, setSelectedDeviceId, loadingDevices } =
+    useMediaDevices("videoinput", stream);
 
   const { mutate: changeCamera, isPending: changingCamera } = useMutation({
     mutationFn: async (deviceId: string) => {

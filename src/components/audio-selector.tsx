@@ -7,9 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getMediaPermission } from "@/lib/get-media-permission";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useMediaDevices } from "@/hooks/use-media-devices";
 
 interface AudioSelectorProps {
   stream: MediaStream | undefined;
@@ -24,33 +24,8 @@ export default function AudioSelector({
   setIsMutedAction,
   setStreamAction,
 }: AudioSelectorProps) {
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string>("");
-
-  // Get available audio devices
-  const { data: devices = [], isLoading: loadingDevices } = useQuery({
-    queryKey: ["audioDevices", !!stream],
-    queryFn: async () => {
-      if (!stream) {
-        await getMediaPermission({ audio: true });
-      }
-
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const audioInputs = devices.filter(
-        (device) => device.kind === "audioinput",
-      );
-
-      if (audioInputs.length === 0) {
-        return undefined;
-      }
-
-      // Set default device if we have devices and none is selected
-      if (!selectedDeviceId) {
-        setSelectedDeviceId(audioInputs[0].deviceId);
-      }
-
-      return audioInputs;
-    },
-  });
+  const { devices, selectedDeviceId, setSelectedDeviceId, loadingDevices } =
+    useMediaDevices("audioinput", stream);
 
   const { mutate: changeAudioDevice, isPending: changingAudio } = useMutation({
     mutationFn: async (deviceId: string) => {
