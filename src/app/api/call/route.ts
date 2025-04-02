@@ -22,11 +22,19 @@ export async function POST() {
       transcriptOptional: true,
       initialOutputMedium: "MESSAGE_MEDIUM_VOICE",
       experimentalSettings: {},
+      firstSpeakerSettings: {
+        agent: {
+          uninterruptible: true,
+          text: "Hey, how's it going?",
+        },
+      },
       metadata: {},
     }),
   };
 
   const result = await fetch("https://api.ultravox.ai/api/calls", options).then((response) => response.json());
+
+  console.log(result);
 
   return Response.json({ callId: result.callId, joinUrl: result.joinUrl });
 }

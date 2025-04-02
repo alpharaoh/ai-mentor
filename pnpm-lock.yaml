@@ -44,6 +44,9 @@ importers:
       tw-animate-css:
         specifier: ^1.2.5
         version: 1.2.5
+      ultravox-client:
+        specifier: ^0.3.6
+        version: 0.3.6
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3
@@ -114,6 +117,9 @@ packages:
   '@babel/types@7.27.0':
     resolution: {integrity: sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg==}
     engines: {node: '>=6.9.0'}
+
+  '@bufbuild/protobuf@1.10.0':
+    resolution: {integrity: sha512-QDdVFLoN93Zjg36NoQPZfsVH9tZew7wKDKyV5qRdj8ntT4wQCOradQjRaTdwMhWUYsgKsvCINKKm87FdEk96Ag==}
 
   '@emnapi/core@1.4.0':
     resolution: {integrity: sha512-H+N/FqT07NmLmt6OFFtDfwe8PNygprzBikrEMyQfgqSmT0vzE515Pz7R8izwB9q/zsH/MA64AKoul3sA6/CzVg==}
@@ -323,6 +329,12 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@livekit/mutex@1.1.1':
+    resolution: {integrity: sha512-EsshAucklmpuUAfkABPxJNhzj9v2sG7JuzFDL4ML1oJQSV14sqrpTYnsaOudMAw9yOaW53NU3QQTlUQoRs4czw==}
+
+  '@livekit/protocol@1.34.0':
+    resolution: {integrity: sha512-bU7pCLAMRVTVZb1KSxA46q55bhOc4iATrY/gccy2/oX1D57tiZEI+8wGRWHeDwBb0UwnABu6JXzC4tTFkdsaOg==}
 
   '@napi-rs/wasm-runtime@0.2.8':
     resolution: {integrity: sha512-OBlgKdX7gin7OIq4fadsjpg+cp2ZphvAIKucHsNfTdJiqdOmOEwQd/bHi0VwNrcw5xpBJyUw6cK/QilCqy1BSg==}
@@ -1281,6 +1293,10 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
+  events@3.3.0:
+    resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
+    engines: {node: '>=0.8.x'}
+
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -1674,6 +1690,9 @@ packages:
     resolution: {integrity: sha512-6b6gd/RUXKaw5keVdSEtqFVdzWnU5jMxTUjA2bVcMNPLwSQ08Sv/UodBVtETLCn7k4S1Ibxwh7k68IwLZPgKaA==}
     engines: {node: '>= 12.0.0'}
 
+  livekit-client@2.9.9:
+    resolution: {integrity: sha512-Mrm9Z/kPmJP5r4EMbzXPfB27gRP+tZtU7Zzen2o8u6w5N6FxaqXerRFqtXddGXaVzZouJOAg51/5A9u3saC/2A==}
+
   locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
@@ -1683,6 +1702,10 @@ packages:
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+
+  loglevel@1.9.2:
+    resolution: {integrity: sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==}
+    engines: {node: '>= 0.6.0'}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -1931,6 +1954,9 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
+  rxjs@7.8.2:
+    resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
+
   safe-array-concat@1.1.3:
     resolution: {integrity: sha512-AURm5f0jYEOydBj7VQlVvDrjeFgthDdEF5H1dP+6mNpoXOMo1quQqJ4wvJDyRZ9+pO3kGWoOdmV08cSv2aJV6Q==}
     engines: {node: '>=0.4'}
@@ -1945,6 +1971,13 @@ packages:
 
   scheduler@0.26.0:
     resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
+
+  sdp-transform@2.15.0:
+    resolution: {integrity: sha512-KrOH82c/W+GYQ0LHqtr3caRpM3ITglq3ljGUIb8LTki7ByacJZ9z+piSGiwZDsRyhQbYBOBJgr2k6X4BZXi3Kw==}
+    hasBin: true
+
+  sdp@3.2.0:
+    resolution: {integrity: sha512-d7wDPgDV3DDiqulJjKiV2865wKsJ34YI+NDREbm+FySq6WuKOikwyNQcm+doLAZ1O6ltdO0SeKle2xMpN3Brgw==}
 
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
@@ -2085,6 +2118,9 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
+  ts-debounce@4.0.0:
+    resolution: {integrity: sha512-+1iDGY6NmOGidq7i7xZGA4cm8DAa6fqdYcvO5Z6yBevH++Bdo9Qt/mN0TzHUgcCcKv1gmh9+W5dHqz8pMWbCbg==}
+
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
 
@@ -2114,10 +2150,17 @@ packages:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
 
+  typed-emitter@2.1.0:
+    resolution: {integrity: sha512-g/KzbYKbH5C2vPkaXGu8DJlHrGKHLsM25Zg9WuC9pMGfuvT+X25tZQWo5fK1BjBm8+UrVE9LDCvaY0CQk+fXDA==}
+
   typescript@5.8.2:
     resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  ultravox-client@0.3.6:
+    resolution: {integrity: sha512-Ut0uIeU6uGY7ZvNQd3Qm4IVDFamfYgt1QeLos52bKUizwjv/jVtQVG8HzbVOIl2dOP+XtqxWuRdGmBeamZCyXw==}
+    engines: {pnpm: '>=6.0.0'}
 
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
@@ -2151,6 +2194,10 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  webrtc-adapter@9.0.1:
+    resolution: {integrity: sha512-1AQO+d4ElfVSXyzNVTOewgGT/tAomwwztX/6e3totvyyzXPvXIIuUUjAmyZGbKBKbZOXauuJooZm3g6IuFuiNQ==}
+    engines: {node: '>=6.0.0', npm: '>=3.10.0'}
 
   which-boxed-primitive@1.1.1:
     resolution: {integrity: sha512-TbX3mj8n0odCBFVlY8AxkqcHASw3L60jIuF8jFP78az3C2YhmGvqbHBpAjTRH2/xqYunrJ9g1jSyjCjpoWzIAA==}
@@ -2229,6 +2276,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
+
+  '@bufbuild/protobuf@1.10.0': {}
 
   '@emnapi/core@1.4.0':
     dependencies:
@@ -2415,6 +2464,12 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@livekit/mutex@1.1.1': {}
+
+  '@livekit/protocol@1.34.0':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.0
 
   '@napi-rs/wasm-runtime@0.2.8':
     dependencies:
@@ -3480,6 +3535,8 @@ snapshots:
 
   esutils@2.0.3: {}
 
+  events@3.3.0: {}
+
   fast-deep-equal@3.1.3: {}
 
   fast-glob@3.3.1:
@@ -3860,6 +3917,18 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.29.2
       lightningcss-win32-x64-msvc: 1.29.2
 
+  livekit-client@2.9.9:
+    dependencies:
+      '@livekit/mutex': 1.1.1
+      '@livekit/protocol': 1.34.0
+      events: 3.3.0
+      loglevel: 1.9.2
+      sdp-transform: 2.15.0
+      ts-debounce: 4.0.0
+      tslib: 2.8.1
+      typed-emitter: 2.1.0
+      webrtc-adapter: 9.0.1
+
   locate-path@6.0.0:
     dependencies:
       p-locate: 5.0.0
@@ -3867,6 +3936,8 @@ snapshots:
   lodash.merge@4.6.2: {}
 
   lodash@4.17.21: {}
+
+  loglevel@1.9.2: {}
 
   loose-envify@1.4.0:
     dependencies:
@@ -4119,6 +4190,11 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
+  rxjs@7.8.2:
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
   safe-array-concat@1.1.3:
     dependencies:
       call-bind: 1.0.8
@@ -4139,6 +4215,10 @@ snapshots:
       is-regex: 1.2.1
 
   scheduler@0.26.0: {}
+
+  sdp-transform@2.15.0: {}
+
+  sdp@3.2.0: {}
 
   semver@6.3.1: {}
 
@@ -4322,6 +4402,8 @@ snapshots:
     dependencies:
       typescript: 5.8.2
 
+  ts-debounce@4.0.0: {}
+
   tsconfig-paths@3.15.0:
     dependencies:
       '@types/json5': 0.0.29
@@ -4370,7 +4452,15 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
+  typed-emitter@2.1.0:
+    optionalDependencies:
+      rxjs: 7.8.2
+
   typescript@5.8.2: {}
+
+  ultravox-client@0.3.6:
+    dependencies:
+      livekit-client: 2.9.9
 
   unbox-primitive@1.1.0:
     dependencies:
@@ -4417,6 +4507,10 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.0.12
+
+  webrtc-adapter@9.0.1:
+    dependencies:
+      sdp: 3.2.0
 
   which-boxed-primitive@1.1.1:
     dependencies:

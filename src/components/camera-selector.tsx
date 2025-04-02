@@ -71,14 +71,15 @@ export default function CameraSelector({
       if (isCameraOn && stream) {
         // Turn off camera
         stream.getVideoTracks().forEach((track) => track.stop());
+
         setStreamAction((prevStream) => {
           if (prevStream) {
+            // Create a new stream with just audio tracks
             const audioTracks = prevStream.getAudioTracks();
-            const newStream = new MediaStream();
-            audioTracks.forEach((track) => newStream.addTrack(track));
-            return newStream;
+            if (audioTracks.length > 0) {
+              return new MediaStream(audioTracks);
+            }
           }
-
           return undefined;
         });
 
@@ -86,21 +87,21 @@ export default function CameraSelector({
       } else {
         const constraints = {
           video: selectedDeviceId ? { deviceId: { exact: selectedDeviceId } } : true,
-          audio: !isMuted,
+          audio: !isMuted, // Ensure audio is correctly requested
         };
 
         const newStream = await navigator.mediaDevices.getUserMedia(constraints);
 
-        if (stream) {
-          // If we already have a stream with audio, keep those tracks
-          stream.getAudioTracks().forEach((track) => {
-            newStream.addTrack(track);
-          });
-          // Stop old video tracks
-          stream.getVideoTracks().forEach((track) => track.stop());
-        }
+        setStreamAction((prevStream) => {
+          if (prevStream) {
+            // Merge new video stream with existing audio tracks
+            prevStream.getAudioTracks().forEach((track) => newStream.addTrack(track));
+            // Stop old video tracks to avoid conflicts
+            prevStream.getVideoTracks().forEach((track) => track.stop());
+          }
+          return newStream;
+        });
 
-        setStreamAction(newStream);
         setIsCameraOnAction(true);
       }
     },

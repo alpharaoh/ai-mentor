@@ -42,38 +42,38 @@ export default function VideoDisplay({ isMuted, participants, isCameraOn }: Vide
           <div
             key={participant.id}
             className={cn(
-              "relative aspect-video bg-slate-800 rounded-lg overflow-hidden",
+              "relative aspect-video bg-slate-800 rounded-lg overflow-hidden z-50",
               participant.isSpeaking && "ring-3 ring-blue-300 ring-offset-4 ring-offset-slate-900",
             )}
           >
             {/* Show avatar when no video */}
-            {(!participant.stream || (participant.isSelf && !isCameraOn)) && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-slate-700 rounded-full p-8">
-                  <User size={60} className="text-slate-400" />
-                </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="bg-slate-700 rounded-full p-8">
+                <User size={60} className="text-slate-400" />
               </div>
-            )}
+            </div>
 
             {/* Video element */}
-            <video
-              ref={(el) => {
-                videoRefs.current.set(participant.id, el);
-              }}
-              className={`w-full h-full object-cover ${!participant.stream || (participant.isSelf && !isCameraOn) ? "hidden" : ""}`}
-              autoPlay
-              playsInline
-              muted={participant.isSelf}
-            />
+            {participant.stream && participant.isSelf && isCameraOn && (
+              <video
+                ref={(el) => {
+                  videoRefs.current.set(participant.id, el);
+                }}
+                className={`relative z-40 w-full h-full object-cover`}
+                autoPlay
+                playsInline
+                muted={participant.isSelf}
+              />
+            )}
 
             {/* User name label */}
-            <div className="absolute bottom-4 left-4 bg-slate-950/50 text-white px-3 py-1 rounded-md">
+            <div className="absolute z-50 bottom-4 left-4 bg-slate-950/50 text-white px-3 py-1 rounded-md">
               {participant.name}
             </div>
 
             {/* Muted indicator - only show for self */}
             {participant.isSelf && isMuted && (
-              <div className="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded-full text-sm font-semibold">
+              <div className="absolute z-50 top-4 right-4 bg-red-500 text-white px-2 py-1 rounded-full text-sm font-semibold">
                 Muted
               </div>
             )}

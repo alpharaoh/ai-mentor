@@ -1,8 +1,8 @@
 "use client";
 
 import { AnimatePresence } from "framer-motion";
-import { PhoneOff } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { Loader2, PhoneCall, PhoneOff } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import AudioSelector from "@/components/audio-selector";
 import ToggleChat from "@/components/toggle-chat";
@@ -13,13 +13,62 @@ import CameraSelector from "./camera-selector";
 import ChatPanel from "./chat-panel";
 import ControlBar from "./control-bar";
 import VideoDisplay from "./video-display";
+import { UltravoxSession, UltravoxSessionStatus } from "ultravox-client";
+import { useMutation } from "@tanstack/react-query";
 
 export default function MeetingInterface() {
   const [stream, setStream] = useState<MediaStream>();
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isCameraOn, setIsCameraOn] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
+  const [isMentorSpeaking, setIsMentorSpeaking] = useState<boolean>(false);
+  const [session, setSession] = useState<UltravoxSession>();
+
   const isSpeaking = useIsSpeaking(stream);
+
+  console.log({ isSpeaking });
+
+  useEffect(() => {
+    setSession(new UltravoxSession());
+  }, []);
+
+  const { mutate: createCall, status } = useMutation({
+    mutationFn: async () => {
+      const agentCall = await fetch("/api/call", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const agentCallData = await agentCall.json();
+
+      session?.joinCall(agentCallData.joinUrl);
+
+      return null;
+    },
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (status === "idle") {
+      // createCall();
+    }
+  }, [createCall, status]);
+
+  useEffect(() => {
+    if (!session) return;
+
+    const handleStatusChange = () => {
+      setIsMentorSpeaking(session.status === UltravoxSessionStatus.SPEAKING);
+    };
+
+    session.addEventListener("status", handleStatusChange);
+
+    return () => {
+      session.removeEventListener("status", handleStatusChange);
+    };
+  }, [session]);
 
   const participants = useMemo(
     () => [
@@ -34,16 +83,16 @@ export default function MeetingInterface() {
         id: "mentor",
         name: "Mentor",
         isSelf: false,
-        isSpeaking: false,
+        isSpeaking: isMentorSpeaking,
         stream: undefined,
       },
     ],
-    [stream, isSpeaking],
+    [stream, isSpeaking, isMentorSpeaking],
   );
 
   const endCall = useCallback(() => {
-    alert("Call ended");
-  }, []);
+    session?.leaveCall();
+  }, [session]);
 
   return (
     <div className="relative w-full h-screen flex bg-slate-900">
@@ -69,7 +118,13 @@ export default function MeetingInterface() {
           className="w-16 h-12 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700"
           aria-label="End call"
         >
-          <PhoneOff size={20} />
+          {session?.status === UltravoxSessionStatus.DISCONNECTED ? (
+            <PhoneCall size={20} />
+          ) : session?.status === UltravoxSessionStatus.DISCONNECTING ? (
+            <Loader2 size={20} className="animate-spin" />
+          ) : (
+            <PhoneOff size={20} />
+          )}
         </button>
 
         <ToggleChat isChatOpen={isChatOpen} setChatOpenAction={setIsChatOpen} />
