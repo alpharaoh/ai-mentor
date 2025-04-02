@@ -15,7 +15,7 @@ export async function POST() {
       systemPrompt: mentorSystemPrompt,
       temperature: 0,
       model: "fixie-ai/ultravox",
-      voice: "813f0a80-2dc5-4019-af72-11237a2b74d5",
+      voice: "91fa9bcf-93c8-467c-8b29-973720e3f167",
       initialMessages: [],
       timeExceededMessage: "Hey, I'm sorry, but I've run out of time. You may have to call me back another time.",
       recordingEnabled: true,
