@@ -27,6 +27,12 @@ export default function VideoDisplay({
       const videoElement = videoRefs.current.get(participant.id);
       if (videoElement && participant.stream) {
         videoElement.srcObject = participant.stream;
+        // Apply mirror effect for self-view only
+        if (participant.isSelf) {
+          videoElement.style.transform = "scaleX(-1)";
+        } else {
+          videoElement.style.transform = "scaleX(1)";
+        }
       }
     });
   }, [participants]);
