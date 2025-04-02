@@ -2,10 +2,7 @@ import { getMediaPermission } from "@/lib/get-media-permission";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-export const useMediaDevices = (
-  kind: MediaDeviceKind,
-  stream: MediaStream | undefined,
-) => {
+export const useMediaDevices = (kind: MediaDeviceKind, stream: MediaStream | undefined) => {
   const [selectedDeviceId, setSelectedDeviceId] = useState<string>();
 
   const { data: devices = [], isLoading: loadingDevices } = useQuery({

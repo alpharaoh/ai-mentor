@@ -8,10 +8,7 @@ interface ToggleChatProps {
   setChatOpenAction: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ToggleChat({
-  isChatOpen,
-  setChatOpenAction,
-}: ToggleChatProps) {
+export default function ToggleChat({ isChatOpen, setChatOpenAction }: ToggleChatProps) {
   const toggleChat = useCallback(() => {
     setChatOpenAction((isChatOpen) => !isChatOpen);
   }, [setChatOpenAction]);
@@ -20,9 +17,7 @@ export default function ToggleChat({
     <button
       onClick={toggleChat}
       className={`w-12 h-12 rounded-full flex items-center justify-center ${
-        isChatOpen
-          ? "bg-blue-500 text-white"
-          : "bg-slate-700 text-white hover:bg-slate-600"
+        isChatOpen ? "bg-blue-500 text-white" : "bg-slate-700 text-white hover:bg-slate-600"
       }`}
       aria-label={isChatOpen ? "Close chat" : "Open chat"}
     >

@@ -1,15 +1,18 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import VideoDisplay from "./video-display";
-import ControlBar from "./control-bar";
-import ChatPanel from "./chat-panel";
-import CameraSelector from "./camera-selector";
-import { PhoneOff } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
+import { PhoneOff } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+
 import AudioSelector from "@/components/audio-selector";
-import { useIsSpeaking } from "@/hooks/use-is-speaking";
 import ToggleChat from "@/components/toggle-chat";
+
+import { useIsSpeaking } from "@/hooks/use-is-speaking";
+
+import CameraSelector from "./camera-selector";
+import ChatPanel from "./chat-panel";
+import ControlBar from "./control-bar";
+import VideoDisplay from "./video-display";
 
 export default function MeetingInterface() {
   const [stream, setStream] = useState<MediaStream>();
@@ -44,25 +47,14 @@ export default function MeetingInterface() {
 
   return (
     <div className="relative w-full h-screen flex bg-slate-900">
-      <div
-        className={`flex-1 transition-all duration-300 ${isChatOpen ? "pr-0 sm:pr-96" : ""}`}
-      >
-        <VideoDisplay
-          isMuted={isMuted}
-          participants={participants}
-          isCameraOn={isCameraOn}
-        />
+      <div className={`flex-1 transition-all duration-300 ${isChatOpen ? "pr-0 sm:pr-96" : ""}`}>
+        <VideoDisplay isMuted={isMuted} participants={participants} isCameraOn={isCameraOn} />
       </div>
 
       <AnimatePresence>{isChatOpen && <ChatPanel />}</AnimatePresence>
 
       <ControlBar>
-        <AudioSelector
-          stream={stream}
-          setStreamAction={setStream}
-          isMuted={isMuted}
-          setIsMutedAction={setIsMuted}
-        />
+        <AudioSelector stream={stream} setStreamAction={setStream} isMuted={isMuted} setIsMutedAction={setIsMuted} />
 
         <CameraSelector
           isMuted={isMuted}

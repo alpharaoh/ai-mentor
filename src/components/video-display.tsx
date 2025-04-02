@@ -16,11 +16,7 @@ interface VideoDisplayProps {
   }[];
 }
 
-export default function VideoDisplay({
-  isMuted,
-  participants,
-  isCameraOn,
-}: VideoDisplayProps) {
+export default function VideoDisplay({ isMuted, participants, isCameraOn }: VideoDisplayProps) {
   const videoRefs = useRef<Map<string, HTMLVideoElement | null>>(new Map());
 
   // Set up video streams
@@ -47,8 +43,7 @@ export default function VideoDisplay({
             key={participant.id}
             className={cn(
               "relative aspect-video bg-slate-800 rounded-lg overflow-hidden",
-              participant.isSpeaking &&
-                "ring-3 ring-blue-300 ring-offset-4 ring-offset-slate-900",
+              participant.isSpeaking && "ring-3 ring-blue-300 ring-offset-4 ring-offset-slate-900",
             )}
           >
             {/* Show avatar when no video */}

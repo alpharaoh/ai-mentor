@@ -1,0 +1,9 @@
+**/node_modules
+**/package-lock.json
+**/public
+**/dist
+**/next-env.d.ts
+**/pnpm-lock.yaml
+**/tsconfig.json
+**/generated/**/*
+**/README.md

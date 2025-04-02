@@ -17,8 +17,7 @@ export async function POST() {
       model: "fixie-ai/ultravox",
       voice: "91fa9bcf-93c8-467c-8b29-973720e3f167",
       initialMessages: [],
-      timeExceededMessage:
-        "Hey, I'm sorry, but I've run out of time. You may have to call me back another time.",
+      timeExceededMessage: "Hey, I'm sorry, but I've run out of time. You may have to call me back another time.",
       recordingEnabled: true,
       transcriptOptional: true,
       initialOutputMedium: "MESSAGE_MEDIUM_VOICE",
@@ -27,9 +26,7 @@ export async function POST() {
     }),
   };
 
-  const result = await fetch("https://api.ultravox.ai/api/calls", options).then(
-    (response) => response.json(),
-  );
+  const result = await fetch("https://api.ultravox.ai/api/calls", options).then((response) => response.json());
 
   return Response.json({ callId: result.callId, joinUrl: result.joinUrl });
 }

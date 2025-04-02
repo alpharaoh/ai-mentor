@@ -31,8 +31,7 @@ export default function ChatPanel() {
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -52,17 +51,12 @@ export default function ChatPanel() {
         <h2 className="text-lg font-medium">Meeting chat</h2>
       </div>
 
-      <div
-        ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4"
-      >
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <div key={message.id} className="flex flex-col">
             <div className="flex items-baseline">
               <span className="font-medium mr-2">{message.sender}</span>
-              <span className="text-xs text-slate-500">
-                {formatTime(message.timestamp)}
-              </span>
+              <span className="text-xs text-slate-500">{formatTime(message.timestamp)}</span>
             </div>
             <p className="mt-1">{message.text}</p>
           </div>

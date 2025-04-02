@@ -26,8 +26,7 @@ export default function CameraSelector({
   setIsCameraOnAction,
   setStreamAction,
 }: CameraSelectorProps) {
-  const { devices, selectedDeviceId, setSelectedDeviceId, loadingDevices } =
-    useMediaDevices("videoinput", stream);
+  const { devices, selectedDeviceId, setSelectedDeviceId, loadingDevices } = useMediaDevices("videoinput", stream);
 
   const { mutate: changeCamera, isPending: changingCamera } = useMutation({
     mutationFn: async (deviceId: string) => {
@@ -86,14 +85,11 @@ export default function CameraSelector({
         setIsCameraOnAction(false);
       } else {
         const constraints = {
-          video: selectedDeviceId
-            ? { deviceId: { exact: selectedDeviceId } }
-            : true,
+          video: selectedDeviceId ? { deviceId: { exact: selectedDeviceId } } : true,
           audio: !isMuted,
         };
 
-        const newStream =
-          await navigator.mediaDevices.getUserMedia(constraints);
+        const newStream = await navigator.mediaDevices.getUserMedia(constraints);
 
         if (stream) {
           // If we already have a stream with audio, keep those tracks
@@ -128,9 +124,7 @@ export default function CameraSelector({
         <button
           onClick={() => toggleCamera()}
           className={`w-12 h-12 rounded-full flex items-center justify-center ${
-            !isCameraOn && !isLoading
-              ? "bg-red-500 text-white"
-              : "bg-slate-700 text-white hover:bg-slate-600"
+            !isCameraOn && !isLoading ? "bg-red-500 text-white" : "bg-slate-700 text-white hover:bg-slate-600"
           }`}
           aria-label={isCameraOn ? "Turn off camera" : "Turn on camera"}
         >
@@ -162,12 +156,8 @@ export default function CameraSelector({
             onClick={() => changeCamera(device.deviceId)}
             className="flex items-center justify-between"
           >
-            <span className="truncate text-base">
-              {device.label || `Camera ${devices.indexOf(device) + 1}`}
-            </span>
-            {selectedDeviceId === device.deviceId && (
-              <Check size={16} className="ml-2 text-blue-300" />
-            )}
+            <span className="truncate text-base">{device.label || `Camera ${devices.indexOf(device) + 1}`}</span>
+            {selectedDeviceId === device.deviceId && <Check size={16} className="ml-2 text-blue-300" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

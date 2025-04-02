@@ -1,14 +1,16 @@
 "use client";
 
-import { Mic, MicOff, Check, ChevronUp, Loader2 } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { Check, ChevronUp, Loader2, Mic, MicOff } from "lucide-react";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { type Dispatch, type SetStateAction, useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
+
 import { useMediaDevices } from "@/hooks/use-media-devices";
 
 interface AudioSelectorProps {
@@ -18,14 +20,8 @@ interface AudioSelectorProps {
   setIsMutedAction: (isMuted: boolean) => void;
 }
 
-export default function AudioSelector({
-  stream,
-  isMuted,
-  setIsMutedAction,
-  setStreamAction,
-}: AudioSelectorProps) {
-  const { devices, selectedDeviceId, setSelectedDeviceId, loadingDevices } =
-    useMediaDevices("audioinput", stream);
+export default function AudioSelector({ stream, isMuted, setIsMutedAction, setStreamAction }: AudioSelectorProps) {
+  const { devices, selectedDeviceId, setSelectedDeviceId, loadingDevices } = useMediaDevices("audioinput", stream);
 
   const { mutate: changeAudioDevice, isPending: changingAudio } = useMutation({
     mutationFn: async (deviceId: string) => {
@@ -65,51 +61,47 @@ export default function AudioSelector({
     },
   });
 
-  const { mutate: toggleMicrophone, isPending: togglingMicrophone } =
-    useMutation({
-      mutationFn: async () => {
-        if (!isMuted) {
-          // Mute audio
-          if (stream) {
-            stream.getAudioTracks().forEach((track) => {
-              track.enabled = false;
-            });
-          }
-          setIsMutedAction(true);
-        } else {
-          if (stream && stream.getAudioTracks().length > 0) {
-            // If we already have audio tracks, just enable them
-            stream.getAudioTracks().forEach((track) => {
-              track.enabled = true;
-            });
-            setIsMutedAction(false);
-          } else {
-            // Otherwise get a new audio stream
-            const constraints = {
-              audio: selectedDeviceId
-                ? { deviceId: { exact: selectedDeviceId } }
-                : true,
-              video: false,
-            };
-
-            const newStream =
-              await navigator.mediaDevices.getUserMedia(constraints);
-
-            if (stream) {
-              // If we already have a stream with video, keep those tracks
-              stream.getVideoTracks().forEach((track) => {
-                newStream.addTrack(track);
-              });
-              // Stop old audio tracks
-              stream.getAudioTracks().forEach((track) => track.stop());
-            }
-
-            setStreamAction(newStream);
-            setIsMutedAction(false);
-          }
+  const { mutate: toggleMicrophone, isPending: togglingMicrophone } = useMutation({
+    mutationFn: async () => {
+      if (!isMuted) {
+        // Mute audio
+        if (stream) {
+          stream.getAudioTracks().forEach((track) => {
+            track.enabled = false;
+          });
         }
-      },
-    });
+        setIsMutedAction(true);
+      } else {
+        if (stream && stream.getAudioTracks().length > 0) {
+          // If we already have audio tracks, just enable them
+          stream.getAudioTracks().forEach((track) => {
+            track.enabled = true;
+          });
+          setIsMutedAction(false);
+        } else {
+          // Otherwise get a new audio stream
+          const constraints = {
+            audio: selectedDeviceId ? { deviceId: { exact: selectedDeviceId } } : true,
+            video: false,
+          };
+
+          const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+
+          if (stream) {
+            // If we already have a stream with video, keep those tracks
+            stream.getVideoTracks().forEach((track) => {
+              newStream.addTrack(track);
+            });
+            // Stop old audio tracks
+            stream.getAudioTracks().forEach((track) => track.stop());
+          }
+
+          setStreamAction(newStream);
+          setIsMutedAction(false);
+        }
+      }
+    },
+  });
 
   // Initialize audio on component mount
   useEffect(() => {
@@ -117,9 +109,7 @@ export default function AudioSelector({
       if (!stream || stream.getAudioTracks().length === 0) {
         try {
           const audioStream = await navigator.mediaDevices.getUserMedia({
-            audio: selectedDeviceId
-              ? { deviceId: { exact: selectedDeviceId } }
-              : true,
+            audio: selectedDeviceId ? { deviceId: { exact: selectedDeviceId } } : true,
             video: false,
           });
 
@@ -167,9 +157,7 @@ export default function AudioSelector({
         <button
           onClick={() => toggleMicrophone()}
           className={`w-12 h-12 rounded-full flex items-center justify-center ${
-            isMuted && !isLoading
-              ? "bg-red-500 text-white"
-              : "bg-slate-700 text-white hover:bg-slate-600"
+            isMuted && !isLoading ? "bg-red-500 text-white" : "bg-slate-700 text-white hover:bg-slate-600"
           }`}
           aria-label={isMuted ? "Unmute microphone" : "Mute microphone"}
         >
@@ -201,12 +189,8 @@ export default function AudioSelector({
             onClick={() => changeAudioDevice(device.deviceId)}
             className="flex items-center justify-between"
           >
-            <span className="truncate text-base">
-              {device.label || `Microphone ${devices.indexOf(device) + 1}`}
-            </span>
-            {selectedDeviceId === device.deviceId && (
-              <Check size={16} className="ml-2 text-blue-300" />
-            )}
+            <span className="truncate text-base">{device.label || `Microphone ${devices.indexOf(device) + 1}`}</span>
+            {selectedDeviceId === device.deviceId && <Check size={16} className="ml-2 text-blue-300" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
