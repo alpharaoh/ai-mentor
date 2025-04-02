@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { User } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface VideoDisplayProps {
   isMuted: boolean;
@@ -11,6 +12,7 @@ interface VideoDisplayProps {
     name: string;
     isSelf: boolean;
     stream: MediaStream | undefined;
+    isSpeaking: boolean;
   }[];
 }
 
@@ -43,7 +45,11 @@ export default function VideoDisplay({
         {participants.map((participant) => (
           <div
             key={participant.id}
-            className="relative aspect-video bg-slate-800 rounded-lg overflow-hidden"
+            className={cn(
+              "relative aspect-video bg-slate-800 rounded-lg overflow-hidden",
+              participant.isSpeaking &&
+                "ring-2 ring-blue-400 ring-offset-2 ring-offset-blue-100",
+            )}
           >
             {/* Show avatar when no video */}
             {(!participant.stream || (participant.isSelf && !isCameraOn)) && (

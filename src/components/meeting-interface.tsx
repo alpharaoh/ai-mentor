@@ -8,19 +8,33 @@ import CameraSelector from "./camera-selector";
 import { MessageSquare, PhoneOff } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import AudioSelector from "@/components/audio-selector";
+import { useIsSpeaking } from "@/hooks/use-is-speaking";
 
 export default function MeetingInterface() {
   const [stream, setStream] = useState<MediaStream>();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isCameraOn, setIsCameraOn] = useState(false);
+  const isSpeaking = useIsSpeaking(stream);
 
   const participants = useMemo(
     () => [
-      { id: "you", name: "You", isSelf: true, stream: stream },
-      { id: "mentor", name: "Mentor", isSelf: false, stream: undefined },
+      {
+        id: "you",
+        name: "You",
+        isSelf: true,
+        isSpeaking: isSpeaking,
+        stream: stream,
+      },
+      {
+        id: "mentor",
+        name: "Mentor",
+        isSelf: false,
+        isSpeaking: false,
+        stream: undefined,
+      },
     ],
-    [stream],
+    [stream, isSpeaking],
   );
 
   const toggleChat = useCallback(() => {
