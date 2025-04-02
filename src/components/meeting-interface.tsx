@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import VideoDisplay from "./video-display";
 import ControlBar from "./control-bar";
 import ChatPanel from "./chat-panel";
@@ -13,28 +13,31 @@ export default function MeetingInterface() {
   const [isMuted, setIsMuted] = useState(false);
   const [isCameraOn, setIsCameraOn] = useState(false);
 
-  const participants = [
-    { id: "you", name: "You", isSelf: true, stream: null },
-    { id: "mentor", name: "Mentor", isSelf: false, stream: null },
-  ];
+  const participants = useMemo(
+    () => [
+      { id: "you", name: "You", isSelf: true, stream: stream },
+      { id: "mentor", name: "Mentor", isSelf: false, stream: undefined },
+    ],
+    [stream],
+  );
 
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-  };
+  const toggleChat = useCallback(() => {
+    setIsChatOpen((isChatOpen) => !isChatOpen);
+  }, []);
 
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
+  const toggleMute = useCallback(() => {
+    setIsMuted((isMuted) => !isMuted);
 
     if (stream) {
       stream.getAudioTracks().forEach((track) => {
         track.enabled = !isMuted;
       });
     }
-  };
+  }, [isMuted, stream]);
 
-  const endCall = () => {
+  const endCall = useCallback(() => {
     alert("Call ended");
-  };
+  }, []);
 
   return (
     <div className="relative w-full h-screen flex">
@@ -54,7 +57,7 @@ export default function MeetingInterface() {
           className={`w-12 h-12 rounded-full flex items-center justify-center ${
             isMuted
               ? "bg-red-500 text-white"
-              : "bg-gray-700 text-white hover:bg-gray-600"
+              : "bg-slate-700 text-white hover:bg-slate-600"
           }`}
           aria-label={isMuted ? "Unmute" : "Mute"}
         >
@@ -84,7 +87,7 @@ export default function MeetingInterface() {
           className={`w-12 h-12 rounded-full flex items-center justify-center ${
             isChatOpen
               ? "bg-blue-500 text-white"
-              : "bg-gray-700 text-white hover:bg-gray-600"
+              : "bg-slate-700 text-white hover:bg-slate-600"
           }`}
           aria-label={isChatOpen ? "Close chat" : "Open chat"}
         >

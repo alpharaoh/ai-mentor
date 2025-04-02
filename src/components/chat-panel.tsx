@@ -49,8 +49,8 @@ export default function ChatPanel() {
   };
 
   return (
-    <div className="w-80 h-full bg-white flex flex-col border-l border-gray-300">
-      <div className="p-4 border-b border-gray-200">
+    <div className="w-80 h-full bg-white flex flex-col border-l border-slate-300">
+      <div className="p-4 border-b border-slate-200">
         <h2 className="text-lg font-medium">Meeting chat</h2>
       </div>
 
@@ -59,7 +59,7 @@ export default function ChatPanel() {
           <div key={message.id} className="flex flex-col">
             <div className="flex items-baseline">
               <span className="font-medium mr-2">{message.sender}</span>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-slate-500">
                 {formatTime(message.timestamp)}
               </span>
             </div>
@@ -70,14 +70,14 @@ export default function ChatPanel() {
 
       <form
         onSubmit={handleSendMessage}
-        className="p-4 border-t border-gray-200 flex"
+        className="p-4 border-t border-slate-200 flex"
       >
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Send a message to everyone..."
-          className="flex-1 border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 border border-slate-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           type="submit"

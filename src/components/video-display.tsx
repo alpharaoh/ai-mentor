@@ -10,7 +10,7 @@ interface VideoDisplayProps {
     id: string;
     name: string;
     isSelf: boolean;
-    stream: MediaStream | null;
+    stream: MediaStream | undefined;
   }[];
 }
 
@@ -32,18 +32,18 @@ export default function VideoDisplay({
   }, [participants]);
 
   return (
-    <div className="relative w-full h-full bg-gray-900 p-4 flex items-center justify-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-5xl">
+    <div className="relative w-full h-full bg-slate-900 p-4 flex items-center justify-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
         {participants.map((participant) => (
           <div
             key={participant.id}
-            className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden"
+            className="relative aspect-video bg-slate-800 rounded-lg overflow-hidden"
           >
             {/* Show avatar when no video */}
             {(!participant.stream || (participant.isSelf && !isCameraOn)) && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-gray-700 rounded-full p-8">
-                  <User size={60} className="text-gray-400" />
+                <div className="bg-slate-700 rounded-full p-8">
+                  <User size={60} className="text-slate-400" />
                 </div>
               </div>
             )}
@@ -58,7 +58,7 @@ export default function VideoDisplay({
             />
 
             {/* User name label */}
-            <div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-1 rounded-md">
+            <div className="absolute bottom-4 left-4 bg-slate-950/50 text-white px-3 py-1 rounded-md">
               {participant.name}
             </div>
 
