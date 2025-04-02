@@ -5,10 +5,11 @@ import VideoDisplay from "./video-display";
 import ControlBar from "./control-bar";
 import ChatPanel from "./chat-panel";
 import CameraSelector from "./camera-selector";
-import { MessageSquare, PhoneOff } from "lucide-react";
+import { PhoneOff } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import AudioSelector from "@/components/audio-selector";
 import { useIsSpeaking } from "@/hooks/use-is-speaking";
+import ToggleChat from "@/components/toggle-chat";
 
 export default function MeetingInterface() {
   const [stream, setStream] = useState<MediaStream>();
@@ -36,10 +37,6 @@ export default function MeetingInterface() {
     ],
     [stream, isSpeaking],
   );
-
-  const toggleChat = useCallback(() => {
-    setIsChatOpen((isChatOpen) => !isChatOpen);
-  }, []);
 
   const endCall = useCallback(() => {
     alert("Call ended");
@@ -83,17 +80,7 @@ export default function MeetingInterface() {
           <PhoneOff size={20} />
         </button>
 
-        <button
-          onClick={toggleChat}
-          className={`w-12 h-12 rounded-full flex items-center justify-center ${
-            isChatOpen
-              ? "bg-blue-500 text-white"
-              : "bg-slate-700 text-white hover:bg-slate-600"
-          }`}
-          aria-label={isChatOpen ? "Close chat" : "Open chat"}
-        >
-          <MessageSquare size={20} />
-        </button>
+        <ToggleChat isChatOpen={isChatOpen} setChatOpenAction={setIsChatOpen} />
       </ControlBar>
     </div>
   );
