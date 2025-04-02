@@ -6,6 +6,7 @@ import ControlBar from "./control-bar";
 import ChatPanel from "./chat-panel";
 import CameraSelector from "./camera-selector";
 import { MessageSquare, Mic, MicOff, PhoneOff } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 
 export default function MeetingInterface() {
   const [stream, setStream] = useState<MediaStream>();
@@ -40,8 +41,10 @@ export default function MeetingInterface() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen flex">
-      <div className="flex-1 transition-all duration-300">
+    <div className="relative w-full h-screen flex bg-slate-900">
+      <div
+        className={`flex-1 transition-all duration-300 ${isChatOpen ? "pr-0 sm:pr-96" : ""}`}
+      >
         <VideoDisplay
           isMuted={isMuted}
           participants={participants}
@@ -49,7 +52,7 @@ export default function MeetingInterface() {
         />
       </div>
 
-      {isChatOpen && <ChatPanel />}
+      <AnimatePresence>{isChatOpen && <ChatPanel />}</AnimatePresence>
 
       <ControlBar>
         <button
