@@ -35,7 +35,6 @@ export default function CameraSelector({
       if (!stream) {
         const tempStream = await navigator.mediaDevices.getUserMedia({
           video: true,
-          audio: true,
         });
         tempStream.getTracks().forEach((track) => track.stop());
       }

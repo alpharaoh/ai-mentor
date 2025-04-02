@@ -7,6 +7,7 @@ import ChatPanel from "./chat-panel";
 import CameraSelector from "./camera-selector";
 import { MessageSquare, Mic, MicOff, PhoneOff } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
+import AudioSelector from "@/components/audio-selector";
 
 export default function MeetingInterface() {
   const [stream, setStream] = useState<MediaStream>();
@@ -55,17 +56,12 @@ export default function MeetingInterface() {
       <AnimatePresence>{isChatOpen && <ChatPanel />}</AnimatePresence>
 
       <ControlBar>
-        <button
-          onClick={toggleMute}
-          className={`w-12 h-12 rounded-full flex items-center justify-center ${
-            isMuted
-              ? "bg-red-500 text-white"
-              : "bg-slate-700 text-white hover:bg-slate-600"
-          }`}
-          aria-label={isMuted ? "Unmute" : "Mute"}
-        >
-          {isMuted ? <MicOff size={20} /> : <Mic size={20} />}
-        </button>
+        <AudioSelector
+          stream={stream}
+          setStreamAction={setStream}
+          isMuted={isMuted}
+          setIsMutedAction={setIsMuted}
+        />
 
         <CameraSelector
           isMuted={isMuted}
