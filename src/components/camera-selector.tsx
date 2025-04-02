@@ -7,13 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dispatch,
-  MouseEventHandler,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 interface CameraSelectorProps {
@@ -34,7 +28,7 @@ export default function CameraSelector({
   const [selectedDeviceId, setSelectedDeviceId] = useState<string>("");
 
   // Get available video devices
-  const { data: devices = [], isLoading } = useQuery({
+  const { data: devices = [], isLoading: loadingDevices } = useQuery({
     queryKey: ["videoDevices", !!stream],
     queryFn: async () => {
       // We need to get permission first to see device labels
@@ -64,7 +58,7 @@ export default function CameraSelector({
     },
   });
 
-  const { mutate: changeCamera } = useMutation({
+  const { mutate: changeCamera, isPending: changingCamera } = useMutation({
     mutationFn: async (deviceId: string) => {
       setSelectedDeviceId(deviceId);
 
@@ -102,33 +96,24 @@ export default function CameraSelector({
     },
   });
 
-  // Clean up function to stop all tracks when component unmounts
-  useEffect(() => {
-    return () => {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, [stream]);
+  const { mutate: toggleCamera, isPending: togglingCamera } = useMutation({
+    mutationFn: async () => {
+      if (isCameraOn && stream) {
+        // Turn off camera
+        stream.getVideoTracks().forEach((track) => track.stop());
+        setStreamAction((prevStream) => {
+          if (prevStream) {
+            const audioTracks = prevStream.getAudioTracks();
+            const newStream = new MediaStream();
+            audioTracks.forEach((track) => newStream.addTrack(track));
+            return newStream;
+          }
 
-  const toggleCamera: MouseEventHandler = async () => {
-    if (isCameraOn && stream) {
-      // Turn off camera
-      stream.getVideoTracks().forEach((track) => track.stop());
-      setStreamAction((prevStream) => {
-        if (prevStream) {
-          const audioTracks = prevStream.getAudioTracks();
-          const newStream = new MediaStream();
-          audioTracks.forEach((track) => newStream.addTrack(track));
-          return newStream;
-        }
+          return undefined;
+        });
 
-        return undefined;
-      });
-      setIsCameraOnAction(false);
-    } else {
-      // Turn on camera
-      try {
+        setIsCameraOnAction(false);
+      } else {
         const constraints = {
           video: selectedDeviceId
             ? { deviceId: { exact: selectedDeviceId } }
@@ -150,21 +135,29 @@ export default function CameraSelector({
 
         setStreamAction(newStream);
         setIsCameraOnAction(true);
-      } catch (error) {
-        console.error("Error accessing camera:", error);
-        alert("Could not access camera. Please check permissions.");
       }
-    }
-  };
+    },
+  });
+
+  // Clean up function to stop all tracks when component unmounts
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [stream]);
 
   const hasMultipleCameras = devices.length > 1;
+  const isLoading = loadingDevices || changingCamera || togglingCamera;
   return (
     <DropdownMenu>
       <div className="relative">
+        {/* Camera button */}
         <button
-          onClick={toggleCamera}
+          onClick={() => toggleCamera()}
           className={`w-12 h-12 rounded-full flex items-center justify-center ${
-            !isCameraOn
+            !isCameraOn && !isLoading
               ? "bg-red-500 text-white"
               : "bg-slate-700 text-white hover:bg-slate-600"
           }`}
@@ -198,7 +191,7 @@ export default function CameraSelector({
             onClick={() => changeCamera(device.deviceId)}
             className="flex items-center justify-between"
           >
-            <span className="truncate text-sm">
+            <span className="truncate text-base">
               {device.label || `Camera ${devices.indexOf(device) + 1}`}
             </span>
             {selectedDeviceId === device.deviceId && (
