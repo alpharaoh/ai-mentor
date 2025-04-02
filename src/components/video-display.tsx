@@ -5,7 +5,7 @@ import { User } from "lucide-react";
 
 interface VideoDisplayProps {
   isMuted: boolean;
-  isCameraOn?: boolean;
+  isCameraOn: boolean;
   participants: {
     id: string;
     name: string;
@@ -17,7 +17,7 @@ interface VideoDisplayProps {
 export default function VideoDisplay({
   isMuted,
   participants,
-  isCameraOn = false,
+  isCameraOn,
 }: VideoDisplayProps) {
   const videoRefs = useRef<Map<string, HTMLVideoElement | null>>(new Map());
 
@@ -50,7 +50,9 @@ export default function VideoDisplay({
 
             {/* Video element */}
             <video
-              ref={(el) => videoRefs.current.set(participant.id, el)}
+              ref={(el) => {
+                videoRefs.current.set(participant.id, el);
+              }}
               className={`w-full h-full object-cover ${!participant.stream || (participant.isSelf && !isCameraOn) ? "hidden" : ""}`}
               autoPlay
               playsInline
