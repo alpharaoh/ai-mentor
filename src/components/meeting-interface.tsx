@@ -5,7 +5,7 @@ import VideoDisplay from "./video-display";
 import ControlBar from "./control-bar";
 import ChatPanel from "./chat-panel";
 import CameraSelector from "./camera-selector";
-import { MessageSquare, Mic, MicOff, PhoneOff } from "lucide-react";
+import { MessageSquare, PhoneOff } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import AudioSelector from "@/components/audio-selector";
 
@@ -26,16 +26,6 @@ export default function MeetingInterface() {
   const toggleChat = useCallback(() => {
     setIsChatOpen((isChatOpen) => !isChatOpen);
   }, []);
-
-  const toggleMute = useCallback(() => {
-    setIsMuted((isMuted) => !isMuted);
-
-    if (stream) {
-      stream.getAudioTracks().forEach((track) => {
-        track.enabled = !isMuted;
-      });
-    }
-  }, [isMuted, stream]);
 
   const endCall = useCallback(() => {
     alert("Call ended");
@@ -71,7 +61,6 @@ export default function MeetingInterface() {
           setIsCameraOnAction={setIsCameraOn}
         />
 
-        {/* End call button */}
         <button
           onClick={endCall}
           className="w-16 h-12 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700"
@@ -80,7 +69,6 @@ export default function MeetingInterface() {
           <PhoneOff size={20} />
         </button>
 
-        {/* Chat button */}
         <button
           onClick={toggleChat}
           className={`w-12 h-12 rounded-full flex items-center justify-center ${

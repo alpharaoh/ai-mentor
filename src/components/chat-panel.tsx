@@ -11,7 +11,7 @@ interface Message {
 }
 
 export default function ChatPanel() {
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages] = useState<Message[]>([
     {
       id: 1,
       text: "Welcome to the meeting!",
