@@ -38,9 +38,7 @@ export default function MeetingInterface() {
 
   return (
     <div className="relative w-full h-screen flex">
-      <div
-        className={`flex-1 transition-all duration-300 ${isChatOpen ? "pr-80" : ""}`}
-      >
+      <div className="flex-1 transition-all duration-300">
         <VideoDisplay
           isMuted={isMuted}
           participants={participants}

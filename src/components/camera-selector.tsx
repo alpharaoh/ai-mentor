@@ -14,7 +14,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 interface CameraSelectorProps {
   stream: MediaStream | undefined;
@@ -61,6 +61,44 @@ export default function CameraSelector({
       }
 
       return videoInputs;
+    },
+  });
+
+  const { mutate: changeCamera } = useMutation({
+    mutationFn: async (deviceId: string) => {
+      setSelectedDeviceId(deviceId);
+
+      if (!isCameraOn) {
+        return;
+      }
+
+      // Stop current video tracks
+      if (stream) {
+        stream.getVideoTracks().forEach((track) => track.stop());
+      }
+
+      // Get new stream with selected device
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        video: { deviceId: { exact: deviceId } },
+        audio: false,
+      });
+
+      // Create a combined stream with existing audio
+      const combinedStream = new MediaStream();
+
+      // Add new video tracks
+      newStream.getVideoTracks().forEach((track) => {
+        combinedStream.addTrack(track);
+      });
+
+      // Add existing audio tracks if they exist
+      if (stream) {
+        stream.getAudioTracks().forEach((track) => {
+          combinedStream.addTrack(track);
+        });
+      }
+
+      setStreamAction(combinedStream);
     },
   });
 
@@ -119,47 +157,7 @@ export default function CameraSelector({
     }
   };
 
-  const changeCamera = async (deviceId: string) => {
-    setSelectedDeviceId(deviceId);
-
-    if (isCameraOn) {
-      try {
-        // Stop current video tracks
-        if (stream) {
-          stream.getVideoTracks().forEach((track) => track.stop());
-        }
-
-        // Get new stream with selected device
-        const newStream = await navigator.mediaDevices.getUserMedia({
-          video: { deviceId: { exact: deviceId } },
-          audio: false,
-        });
-
-        // Create a combined stream with existing audio
-        const combinedStream = new MediaStream();
-
-        // Add new video tracks
-        newStream.getVideoTracks().forEach((track) => {
-          combinedStream.addTrack(track);
-        });
-
-        // Add existing audio tracks if they exist
-        if (stream) {
-          stream.getAudioTracks().forEach((track) => {
-            combinedStream.addTrack(track);
-          });
-        }
-
-        setStreamAction(combinedStream);
-      } catch (error) {
-        console.error("Error changing camera:", error);
-        alert("Could not switch camera. Please try again.");
-      }
-    }
-  };
-
   const hasMultipleCameras = devices.length > 1;
-
   return (
     <DropdownMenu>
       <div className="relative">
@@ -168,7 +166,7 @@ export default function CameraSelector({
           className={`w-12 h-12 rounded-full flex items-center justify-center ${
             !isCameraOn
               ? "bg-red-500 text-white"
-              : "bg-gray-700 text-white hover:bg-gray-600"
+              : "bg-slate-700 text-white hover:bg-slate-600"
           }`}
           aria-label={isCameraOn ? "Turn off camera" : "Turn on camera"}
         >
@@ -185,7 +183,7 @@ export default function CameraSelector({
         {isCameraOn && hasMultipleCameras && (
           <DropdownMenuTrigger asChild>
             <button
-              className="absolute -right-1 -top-1 bg-gray-800 rounded-full w-6 h-6 flex items-center justify-center text-white hover:bg-gray-700"
+              className="absolute -right-1 -top-1 bg-slate-800 rounded-full w-6 h-6 flex items-center justify-center text-white hover:bg-slate-700"
               aria-label="Select camera"
             >
               <ChevronUp size={14} />
