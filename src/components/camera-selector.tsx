@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { getMediaPermission } from "@/lib/get-media-permission";
 
 interface CameraSelectorProps {
   stream: MediaStream | undefined;
@@ -31,12 +32,8 @@ export default function CameraSelector({
   const { data: devices = [], isLoading: loadingDevices } = useQuery({
     queryKey: ["videoDevices", !!stream],
     queryFn: async () => {
-      // We need to get permission first to see device labels
       if (!stream) {
-        const tempStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        tempStream.getTracks().forEach((track) => track.stop());
+        await getMediaPermission({ video: true });
       }
 
       const devices = await navigator.mediaDevices.enumerateDevices();

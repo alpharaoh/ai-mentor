@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { getMediaPermission } from "@/lib/get-media-permission";
 
 interface AudioSelectorProps {
   stream: MediaStream | undefined;
@@ -29,12 +30,8 @@ export default function AudioSelector({
   const { data: devices = [], isLoading: loadingDevices } = useQuery({
     queryKey: ["audioDevices", !!stream],
     queryFn: async () => {
-      // We need to get permission first to see device labels
       if (!stream) {
-        const tempStream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-        tempStream.getTracks().forEach((track) => track.stop());
+        await getMediaPermission({ audio: true });
       }
 
       const devices = await navigator.mediaDevices.enumerateDevices();
