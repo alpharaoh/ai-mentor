@@ -50,7 +50,7 @@ export default function MeetingInterface() {
 
   useEffect(() => {
     if (status === "idle") {
-      createCall();
+      // createCall();
     }
   }, [createCall, status]);
 
