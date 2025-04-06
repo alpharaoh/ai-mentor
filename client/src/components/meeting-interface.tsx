@@ -33,7 +33,7 @@ export default function MeetingInterface() {
 
   const { mutate: createCall, status } = useMutation({
     mutationFn: async () => {
-      const agentCall = await fetch("/api/call", {
+      const agentCall = await fetch("/api/create_call", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function MeetingInterface() {
 
   useEffect(() => {
     if (status === "idle") {
-      createCall();
+      // createCall();
     }
   }, [createCall, status]);
 
