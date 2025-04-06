@@ -32,7 +32,7 @@ export default function MeetingInterface() {
     setSession(new UltravoxSession());
   }, []);
 
-  const { mutate: createCall, status } = useMutation({
+  const { mutate: createCall, status: createCallStatus } = useMutation({
     mutationFn: async () => {
       const agentCall = await fetch("/api/create_call", {
         method: "POST",
@@ -56,7 +56,7 @@ export default function MeetingInterface() {
     retry: false,
   });
 
-  const { mutate: analyseCall } = useMutation({
+  const { mutate: analyseCall, status: analyseCallStatus } = useMutation({
     mutationFn: async () => {
       const analyseCall = await fetch("/api/analyze_call", {
         method: "POST",
@@ -79,10 +79,10 @@ export default function MeetingInterface() {
   });
 
   useEffect(() => {
-    if (status === "idle") {
+    if (createCallStatus === "idle") {
       createCall();
     }
-  }, [createCall, status]);
+  }, [createCall, createCallStatus]);
 
   const handleCallEnded = useCallback(() => {
     analyseCall();
@@ -96,7 +96,7 @@ export default function MeetingInterface() {
 
       const isDisconnected =
         session.status === UltravoxSessionStatus.DISCONNECTED || session.status === UltravoxSessionStatus.DISCONNECTING;
-      if (isDisconnected && callStarted) {
+      if (isDisconnected && callStarted && analyseCallStatus === "idle") {
         handleCallEnded();
       }
     };
@@ -106,7 +106,7 @@ export default function MeetingInterface() {
     return () => {
       session.removeEventListener("status", handleStatusChange);
     };
-  }, [session, callStarted, handleCallEnded]);
+  }, [session, callStarted, handleCallEnded, analyseCallStatus]);
 
   const participants = useMemo(
     () => [
