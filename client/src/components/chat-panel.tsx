@@ -30,7 +30,7 @@ export default function ChatPanel({ transcripts }: ChatPanelProps) {
         <h2 className="text-md font-medium">Meeting transcript</h2>
       </div>
 
-      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-5 space-y-4">
         {transcripts.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
             <p className="text-center text-gray-500">Talk to the mentor to get started</p>

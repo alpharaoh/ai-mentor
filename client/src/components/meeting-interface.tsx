@@ -131,11 +131,7 @@ export default function MeetingInterface() {
           )}
         </button>
 
-        <ToggleChat
-          isChatOpen={isChatOpen}
-          setChatOpenAction={setIsChatOpen}
-          transcripts={session?.transcripts ?? []}
-        />
+        <ToggleChat isChatOpen={isChatOpen} setChatOpenAction={setIsChatOpen} />
       </ControlBar>
     </div>
   );

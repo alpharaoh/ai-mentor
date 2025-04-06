@@ -13,6 +13,7 @@ export async function POST() {
     },
     body: JSON.stringify({
       systemPrompt: customPrompt,
+      selectedTools: [{ toolName: "hangUp" }],
       temperature: 0,
       model: "fixie-ai/ultravox",
       voice: "91fa9bcf-93c8-467c-8b29-973720e3f167",
