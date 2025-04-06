@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { Transcript } from "ultravox-client";
 
 interface Message {
   id: number;
@@ -10,7 +11,11 @@ interface Message {
   timestamp: Date;
 }
 
-export default function ChatPanel() {
+interface ChatPanelProps {
+  transcripts: Transcript[];
+}
+
+export default function ChatPanel({ transcripts }: ChatPanelProps) {
   const [messages] = useState<Message[]>([
     {
       id: 1,
@@ -35,10 +40,6 @@ export default function ChatPanel() {
     }
   }, [messages]);
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
-
   return (
     <motion.div
       className="absolute right-4 top-4 bottom-24 w-80 sm:w-96 bg-white rounded-lg shadow-lg flex flex-col border border-slate-200 overflow-hidden"
@@ -52,11 +53,10 @@ export default function ChatPanel() {
       </div>
 
       <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-          <div key={message.id} className="flex flex-col">
+        {transcripts.map((message, idx) => (
+          <div key={idx} className="flex flex-col">
             <div className="flex items-baseline">
-              <span className="font-medium mr-2">{message.sender}</span>
-              <span className="text-xs text-slate-500">{formatTime(message.timestamp)}</span>
+              <span className="font-medium mr-2">{message.speaker}</span>
             </div>
             <p className="mt-1">{message.text}</p>
           </div>
