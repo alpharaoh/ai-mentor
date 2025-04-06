@@ -1,7 +1,9 @@
 from pydantic import BaseModel
-from agents import Agent, Runner
+from agents import Agent, Runner, set_tracing_disabled
 from fastapi import FastAPI, Body
 from dotenv import load_dotenv
+
+set_tracing_disabled(True)
 
 load_dotenv()
     
