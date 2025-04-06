@@ -25,7 +25,7 @@ export async function POST() {
       firstSpeakerSettings: {
         agent: {
           uninterruptible: true,
-          text: "Hey, thanks for joining the call today!",
+          text: "Good morning! Thanks for joining the call, Akaam.",
         },
       },
       metadata: {},
