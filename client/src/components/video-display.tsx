@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ interface VideoDisplayProps {
   }[];
 }
 
-export default function VideoDisplay({ isMuted, participants, isCameraOn }: VideoDisplayProps) {
+function VideoDisplay({ isMuted, participants, isCameraOn }: VideoDisplayProps) {
   const videoRefs = useRef<Map<string, HTMLVideoElement | null>>(new Map());
 
   // Set up video streams
@@ -83,3 +83,5 @@ export default function VideoDisplay({ isMuted, participants, isCameraOn }: Vide
     </div>
   );
 }
+
+export default memo(VideoDisplay);
