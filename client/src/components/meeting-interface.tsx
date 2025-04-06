@@ -73,7 +73,7 @@ export default function MeetingInterface() {
         return null;
       }
 
-      toast.success("Call ended successfully. Analyzing...");
+      toast.success("Call ended successfully.");
     },
     retry: false,
   });
