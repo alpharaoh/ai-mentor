@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 
-export const useStoredState = <T>(
-  key: string,
-  defaultValue?: T,
-  storage: Storage = localStorage,
-): [T, (value: T | ((prev: T) => T)) => void] => {
+export const useStoredState = <T>(key: string, defaultValue?: T): [T, (value: T | ((prev: T) => T)) => void] => {
   const [state, setState] = useState<T>(() => {
-    const value = storage.getItem(key);
+    if (typeof window === "undefined") return;
+
+    const value = localStorage.getItem(key);
     const valueFound = value && value !== "undefined";
     return valueFound ? JSON.parse(value) : defaultValue;
   });
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     if (!state) {
-      storage.removeItem(key);
+      localStorage.removeItem(key);
     } else {
-      storage.setItem(key, JSON.stringify(state));
+      localStorage.setItem(key, JSON.stringify(state));
     }
-  }, [key, state, storage]);
+  }, [key, state]);
 
   return [state, setState];
 };
