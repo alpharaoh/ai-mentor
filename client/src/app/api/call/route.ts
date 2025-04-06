@@ -1,4 +1,4 @@
-import { customPrompt, mentorSystemPrompt } from "@/prompts/mentor";
+import { customPrompt } from "@/prompts/mentor";
 
 if (!process.env.ULTRAVOX_API_KEY) {
   throw new Error("ULTRAVOX_API_KEY is not set");
