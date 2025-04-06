@@ -34,7 +34,9 @@ export async function POST() {
 
   const result = await fetch("https://api.ultravox.ai/api/calls", options).then((response) => response.json());
 
-  console.log(result);
+  if (result.detail === "Set up your subscription to make more calls.") {
+    return Response.json({ message: "Unavailable" });
+  }
 
   return Response.json({ callId: result.callId, joinUrl: result.joinUrl });
 }

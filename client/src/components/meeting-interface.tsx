@@ -15,6 +15,7 @@ import ControlBar from "./control-bar";
 import VideoDisplay from "./video-display";
 import { UltravoxSession, UltravoxSessionStatus } from "ultravox-client";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function MeetingInterface() {
   const [stream, setStream] = useState<MediaStream>();
@@ -40,6 +41,11 @@ export default function MeetingInterface() {
       });
 
       const agentCallData = await agentCall.json();
+
+      if (agentCallData.message === "Unavailable") {
+        toast.error("You have reached the maximum number of calls. Please try again later.");
+        return null;
+      }
 
       session?.joinCall(agentCallData.joinUrl);
 

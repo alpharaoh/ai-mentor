@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import QueryClientProvider from "@/providers/query-client";
+import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <QueryClientProvider>{children}</QueryClientProvider>
+        <Toaster richColors />
       </body>
     </html>
   );
