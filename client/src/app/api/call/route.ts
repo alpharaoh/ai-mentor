@@ -1,4 +1,4 @@
-import { mentorSystemPrompt } from "@/prompts/mentor";
+import { customPrompt, mentorSystemPrompt } from "@/prompts/mentor";
 
 if (!process.env.ULTRAVOX_API_KEY) {
   throw new Error("ULTRAVOX_API_KEY is not set");
@@ -12,7 +12,7 @@ export async function POST() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      systemPrompt: mentorSystemPrompt,
+      systemPrompt: customPrompt,
       temperature: 0,
       model: "fixie-ai/ultravox",
       voice: "91fa9bcf-93c8-467c-8b29-973720e3f167",
