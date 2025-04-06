@@ -53,6 +53,9 @@ export default function MeetingInterface() {
 
       return null;
     },
+    onError: () => {
+      toast.error("Error joining call");
+    },
     retry: false,
   });
 
@@ -75,12 +78,15 @@ export default function MeetingInterface() {
 
       toast.success("Call ended successfully.");
     },
+    onError: () => {
+      toast.error("Error analyzing call");
+    },
     retry: false,
   });
 
   useEffect(() => {
     if (createCallStatus === "idle") {
-      // createCall();
+      createCall();
     }
   }, [createCall, createCallStatus]);
 
