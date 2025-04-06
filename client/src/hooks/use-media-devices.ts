@@ -1,9 +1,9 @@
+import { useStoredState } from "@/hooks/use-local-storage";
 import { getMediaPermission } from "@/lib/get-media-permission";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 
 export const useMediaDevices = (kind: MediaDeviceKind, stream: MediaStream | undefined) => {
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string>();
+  const [selectedDeviceId, setSelectedDeviceId] = useStoredState<string>(`selected-${kind}-device`);
 
   const { data: devices = [], isLoading: loadingDevices } = useQuery({
     queryKey: [`${kind}Devices`, !!stream],
