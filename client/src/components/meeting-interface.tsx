@@ -24,6 +24,7 @@ export default function MeetingInterface() {
   const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
   const [isMentorSpeaking, setIsMentorSpeaking] = useState<boolean>(false);
   const [session, setSession] = useState<UltravoxSession>();
+  const [callStarted, setCallStarted] = useState<boolean>(false);
 
   const isSpeaking = useIsSpeaking(stream);
 
@@ -48,23 +49,56 @@ export default function MeetingInterface() {
       }
 
       session?.joinCall(agentCallData.joinUrl);
+      setCallStarted(true);
 
       return null;
     },
     retry: false,
   });
 
+  const { mutate: analyseCall } = useMutation({
+    mutationFn: async () => {
+      const analyseCall = await fetch("/api/analyze_call", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcripts: session?.transcripts ?? [],
+        }),
+      });
+
+      if (!analyseCall.ok) {
+        toast.error("Something went wrong. Please try again later.");
+        return null;
+      }
+
+      toast.success("Call ended successfully. Analyzing...");
+    },
+    retry: false,
+  });
+
   useEffect(() => {
     if (status === "idle") {
-      // createCall();
+      createCall();
     }
   }, [createCall, status]);
+
+  const handleCallEnded = useCallback(() => {
+    analyseCall();
+  }, [analyseCall]);
 
   useEffect(() => {
     if (!session) return;
 
     const handleStatusChange = () => {
       setIsMentorSpeaking(session.status === UltravoxSessionStatus.SPEAKING);
+
+      const isDisconnected =
+        session.status === UltravoxSessionStatus.DISCONNECTED || session.status === UltravoxSessionStatus.DISCONNECTING;
+      if (isDisconnected && callStarted) {
+        handleCallEnded();
+      }
     };
 
     session.addEventListener("status", handleStatusChange);
@@ -72,7 +106,7 @@ export default function MeetingInterface() {
     return () => {
       session.removeEventListener("status", handleStatusChange);
     };
-  }, [session]);
+  }, [session, callStarted, handleCallEnded]);
 
   const participants = useMemo(
     () => [
