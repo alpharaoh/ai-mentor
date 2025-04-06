@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Transcript } from "ultravox-client";
+import { Role, Transcript } from "ultravox-client";
 
 interface Message {
   id: number;
@@ -56,7 +56,7 @@ export default function ChatPanel({ transcripts }: ChatPanelProps) {
         {transcripts.map((message, idx) => (
           <div key={idx} className="flex flex-col">
             <div className="flex items-baseline">
-              <span className="font-medium mr-2">{message.speaker}</span>
+              <span className="font-medium mr-2">{message.speaker === Role.USER ? "You" : "Mentor"}</span>
             </div>
             <p className="mt-1">{message.text}</p>
           </div>
