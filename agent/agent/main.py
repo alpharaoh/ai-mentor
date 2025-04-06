@@ -1,12 +1,8 @@
 from pydantic import BaseModel
 from dataclasses import dataclass
 from agents import Agent, Runner
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 
-
-"""
-Run an agent which does deep research, internet searching, and watches thousands of hours of YouTube videos to find information about a topic.
-"""
 
 class CalendarEvent(BaseModel):
     name: str
@@ -17,8 +13,6 @@ class CalendarEvent(BaseModel):
 class UserContext:
   uid: str
   is_pro_user: bool
-
-model = "meta-llama/llama-4-scout-17b-16e-instruct"
 
 agent = Agent[UserContext](
     name="Researcher Agent",
@@ -41,6 +35,7 @@ class Transcript(BaseModel):
     speaker: str
 
 @app.post("/api/run_analysis")
-async def run_analysis(transcript: Transcript):
+async def run_analysis(transcripts: list[Transcript] = Body(embed=True)):
     # Return transcript as JSON object stringified
-    return {"transcript": transcript}
+    print(transcripts)
+    return {"transcripts": [t.text for t in transcripts]}
