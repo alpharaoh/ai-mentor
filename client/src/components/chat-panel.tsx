@@ -21,7 +21,7 @@ export default function ChatPanel({ transcripts }: ChatPanelProps) {
 
   return (
     <motion.div
-      className="absolute right-4 top-4 bottom-24 w-80 sm:w-96 bg-white rounded-lg shadow-lg flex flex-col border border-slate-200 overflow-hidden"
+      className="z-50 absolute right-4 top-4 bottom-24 w-80 sm:w-96 bg-white rounded-lg shadow-lg flex flex-col border border-slate-200 overflow-hidden"
       initial={{ x: 640 }}
       animate={{ x: 0 }}
       exit={{ x: 640 }}
