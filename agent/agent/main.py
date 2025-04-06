@@ -2,31 +2,19 @@ from pydantic import BaseModel
 from dataclasses import dataclass
 from agents import Agent, Runner
 from fastapi import FastAPI, Body
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-class CalendarEvent(BaseModel):
-    name: str
-    date: str
-    participants: list[str]
+class ActionPlan(BaseModel):
+    objective: str
+    subjects_to_research: list[str]
     
 @dataclass
 class UserContext:
   uid: str
   is_pro_user: bool
-
-agent = Agent[UserContext](
-    name="Researcher Agent",
-    instructions="You are the best mentor ",
-    output_type=CalendarEvent,
-)
-
-if __name__ == "__main__":
-    result = Runner.run_sync(
-        starting_agent=agent, 
-        input="Akaam Shamerany wants to attend the PyCon US 2023 in San Diego, California on July 15th, 2023. He is interested in learning about the latest trends in Python and web development. He's attending it with Jack and Jasmine",
-    )
-
-    print(result.final_output)
 
 app = FastAPI()
 
@@ -36,6 +24,18 @@ class Transcript(BaseModel):
 
 @app.post("/api/run_analysis")
 async def run_analysis(transcripts: list[Transcript] = Body(embed=True)):
-    # Return transcript as JSON object stringified
-    print(transcripts)
-    return {"transcripts": [t.text for t in transcripts]}
+    action_plan_agent = Agent[UserContext](
+        name="Researcher Agent",
+        instructions="You are the best mentor in the world with an IQ of 160. Your task is to create a research plan given a transcript from a conversation between a user and the mentor. The research plan must contain subjects, must be nuanced, and powerful and helpful for exactly what the user wants. Each subject to research must be 1-2 sentances long",
+        output_type=ActionPlan,
+    )
+
+    result = await Runner.run(
+        starting_agent=action_plan_agent, 
+        input=transcript_to_input(transcripts)
+    )
+
+    return result.final_output
+
+def transcript_to_input(transcript: list[Transcript]) -> str:
+    return "\n\n".join([f"{t.speaker}: {t.text}" for t in transcript])
