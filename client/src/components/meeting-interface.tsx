@@ -104,7 +104,7 @@ export default function MeetingInterface() {
         <VideoDisplay isMuted={isMuted} participants={participants} isCameraOn={isCameraOn} />
       </div>
 
-      <AnimatePresence>{isChatOpen && <ChatPanel />}</AnimatePresence>
+      <AnimatePresence>{isChatOpen && <ChatPanel transcripts={session?.transcripts ?? []} />}</AnimatePresence>
 
       <ControlBar>
         <AudioSelector stream={stream} setStreamAction={setStream} isMuted={isMuted} setIsMutedAction={setIsMuted} />
@@ -131,7 +131,11 @@ export default function MeetingInterface() {
           )}
         </button>
 
-        <ToggleChat isChatOpen={isChatOpen} setChatOpenAction={setIsChatOpen} />
+        <ToggleChat
+          isChatOpen={isChatOpen}
+          setChatOpenAction={setIsChatOpen}
+          transcripts={session?.transcripts ?? []}
+        />
       </ControlBar>
     </div>
   );
