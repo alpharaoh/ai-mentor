@@ -1,17 +1,8 @@
 from pydantic import BaseModel
 from dataclasses import dataclass
-from agents import Agent, Runner, OpenAIChatCompletionsModel, set_default_openai_client, set_tracing_disabled
-import os
-import openai
+from agents import Agent, Runner
+from fastapi import FastAPI
 
-client = openai.AsyncClient(
-    base_url="https://api.groq.com/openai/v1",
-    api_key=os.environ.get("GROQ_API_KEY")
-)
-set_default_openai_client(client)
-set_tracing_disabled(True)
-
-print(os.environ.get("GROQ_API_KEY"))
 
 """
 Run an agent which does deep research, internet searching, and watches thousands of hours of YouTube videos to find information about a topic.
@@ -33,7 +24,6 @@ agent = Agent[UserContext](
     name="Researcher Agent",
     instructions="You are the best mentor ",
     output_type=CalendarEvent,
-    model=OpenAIChatCompletionsModel(model=model, openai_client=client)
 )
 
 if __name__ == "__main__":
@@ -43,3 +33,14 @@ if __name__ == "__main__":
     )
 
     print(result.final_output)
+
+app = FastAPI()
+
+class Transcript(BaseModel):
+    text: str
+    speaker: str
+
+@app.post("/api/run_analysis")
+async def run_analysis(transcript: Transcript):
+    # Return transcript as JSON object stringified
+    return {"transcript": transcript}
