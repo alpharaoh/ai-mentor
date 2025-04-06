@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Role, Transcript } from "ultravox-client";
+import { MessagesSquare } from "lucide-react";
 
 interface ChatPanelProps {
   transcripts: Transcript[];
@@ -27,7 +28,10 @@ export default function ChatPanel({ transcripts }: ChatPanelProps) {
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <div className="p-5 border-b border-slate-200">
-        <h2 className="text-md font-medium">Meeting transcript</h2>
+        <h2 className="text-lg font-medium flex items-center gap-3">
+          <MessagesSquare size={20} />
+          Meeting transcript
+        </h2>
       </div>
 
       <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-5 space-y-4">
