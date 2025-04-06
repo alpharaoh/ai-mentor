@@ -23,13 +23,16 @@ function VideoDisplay({ isMuted, participants, isCameraOn }: VideoDisplayProps) 
   useEffect(() => {
     participants.forEach((participant) => {
       const videoElement = videoRefs.current.get(participant.id);
-      if (videoElement && participant.stream) {
+      if (videoElement && participant.stream && videoElement.srcObject !== participant.stream) {
         videoElement.srcObject = participant.stream;
-        // Apply mirror effect for self-view only
-        if (participant.isSelf) {
-          videoElement.style.transform = "scaleX(-1)";
-        } else {
-          videoElement.style.transform = "scaleX(1)";
+      }
+
+      if (videoElement) {
+        // Mirror self-view only once
+        const currentTransform = videoElement.style.transform;
+        const shouldMirror = participant.isSelf ? "scaleX(-1)" : "scaleX(1)";
+        if (currentTransform !== shouldMirror) {
+          videoElement.style.transform = shouldMirror;
         }
       }
     });
